@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://lr7dsg07gmut"]
+
+[ext_resource type="Script" uid="uid://dmi75r7urrbm0" path="res://levels/test_level.gd" id="1_46lwt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_srpys"]
+
+[node name="TestLevel" type="Node3D" unique_id=1759777453]
+script = ExtResource("1_46lwt")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2112860291]
+transform = Transform3D(1, 0, 0, 0, 0.81446, 0.58021975, 0, -0.58021975, 0.81446, 0, 1.3425989, 1.952877)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=225592754]
+transform = Transform3D(1, 0, 0, 0, 0.94332695, 0.3318648, 0, -0.3318648, 0.94332695, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=984890936]
+mesh = SubResource("BoxMesh_srpys")

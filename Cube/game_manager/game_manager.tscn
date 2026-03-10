@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://wis42vwr2rwt"]
+
+[ext_resource type="Script" uid="uid://bp0xso2o55iq6" path="res://game_manager/game_manager.gd" id="1_ong7i"]
+
+[node name="GameManager" type="Node" unique_id=530212877]
+process_mode = 3
+script = ExtResource("1_ong7i")
+
+[node name="Game" type="Node3D" parent="." unique_id=103187203]
+process_mode = 1
+
+[node name="Gui" type="Control" parent="." unique_id=1258084487]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

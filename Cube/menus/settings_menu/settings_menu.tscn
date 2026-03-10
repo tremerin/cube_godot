@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cfb8xk1gnbcve"]
+
+[ext_resource type="Script" uid="uid://chb2ooh2tbn6d" path="res://menus/settings_menu/settings_menu.gd" id="1_twvox"]
+
+[node name="SettingsMenu" type="Control" unique_id=1007806773]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_twvox")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1555724959]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnGraphics" type="Button" parent="VBoxContainer" unique_id=1111306200]
+layout_mode = 2
+text = "Graphics"
+
+[node name="BtnAudio" type="Button" parent="VBoxContainer" unique_id=277514293]
+layout_mode = 2
+text = "Audio"
+
+[node name="BtnControls" type="Button" parent="VBoxContainer" unique_id=1629406376]
+layout_mode = 2
+text = "Controls
+"
+
+[node name="BtnLanguages" type="Button" parent="VBoxContainer" unique_id=487574671]
+layout_mode = 2
+text = "Languages"
+
+[node name="BtnBack" type="Button" parent="VBoxContainer" unique_id=762598876]
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="VBoxContainer/BtnBack" to="." method="_on_btn_back_pressed"]
