@@ -22,8 +22,8 @@ func _input(event: InputEvent) -> void:
 func _ready() -> void:
 	_instantiate_menu("main_menu")
 
-func _instantiate_level(level_name:String):
-	level_scene = load(level_path + level_name + ".tscn")
+func _instantiate_level(level_name: String):
+	level_scene = load(level_path +  level_name + "/" + level_name + ".tscn")
 	level_instance = level_scene.instantiate()
 	game.add_child(level_instance)
 
@@ -35,13 +35,13 @@ func _delete_menu():
 	if menu_instance:
 		menu_instance.queue_free()
 
-func _instantiate_menu(menu_name:String):
+func _instantiate_menu(menu_name: String):
 	menu_scene = load(menu_path + menu_name  + "/" + menu_name + ".tscn")
 	menu_instance = menu_scene.instantiate()
 	menu_instance.manager = self
 	gui.add_child(menu_instance)
 
-func change_menu(menu_name:String):
+func change_menu(menu_name: String):
 	_delete_menu()
 	_instantiate_menu(menu_name)
 

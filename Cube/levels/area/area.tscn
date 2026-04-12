@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://bynqab2mi3rp2"]
+
+[ext_resource type="Script" uid="uid://d24b3h3db0dhr" path="res://levels/area/area.gd" id="1_gss17"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_skvr4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gss17"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_skvr4"]
+
+[node name="Area" type="Node3D" unique_id=188586795]
+script = ExtResource("1_gss17")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1943161826]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=470985762]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_skvr4")
+
+[node name="Box01" type="StaticBody3D" parent="." unique_id=2060285316]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box01" unique_id=922528624]
+shape = SubResource("BoxShape3D_gss17")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box01" unique_id=24443245]
+mesh = SubResource("BoxMesh_skvr4")
+
+[node name="Box02" type="StaticBody3D" parent="." unique_id=1757406492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8397186, 0, 0)
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box02" unique_id=868716874]
+shape = SubResource("BoxShape3D_gss17")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box02" unique_id=605004775]
+mesh = SubResource("BoxMesh_skvr4")
+
+[node name="NewParent" type="Node3D" parent="." unique_id=534142845]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8967404, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=580295259]
+transform = Transform3D(1, 0, 0, 0, 0.7050304, 0.7091771, 0, -0.7091771, 0.7050304, 0, 3.818009, 3.6144454)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1009413030]
+transform = Transform3D(1, 0, 0, 0, 0.77429324, 0.6328269, 0, -0.6328269, 0.77429324, 0, 3.872367, 4.145321)

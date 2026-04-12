@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cem1rs6uwffxg"]
+
+[ext_resource type="Script" uid="uid://6h23a2gq5xt" path="res://levels/cube/cube.gd" id="1_rth6s"]
+[ext_resource type="PackedScene" uid="uid://d3mxfx40h072q" path="res://components/axis.tscn" id="2_f4l7r"]
+[ext_resource type="PackedScene" uid="uid://dcebj0s7r6a67" path="res://components/camera_pivot.tscn" id="3_l3fwx"]
+
+[node name="Cube" type="Node3D" unique_id=754365821]
+script = ExtResource("1_rth6s")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=152291042]
+transform = Transform3D(1, 0, 0, 0, 0.92168045, 0.38794994, 0, -0.38794994, 0.92168045, 0, 5.361831, 5.8497186)
+
+[node name="Axis" parent="." unique_id=1736347153 instance=ExtResource("2_f4l7r")]
+visible = true
+
+[node name="RotatorsX" type="Node3D" parent="." unique_id=265374124]
+
+[node name="RotatorsY" type="Node3D" parent="." unique_id=756026315]
+
+[node name="RotatorsZ" type="Node3D" parent="." unique_id=550326083]
+
+[node name="Containers" type="Node3D" parent="." unique_id=1431829733]
+
+[node name="CameraPivot" parent="." unique_id=888366665 instance=ExtResource("3_l3fwx")]
