@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var sensitivity := 0.2
-@export var min_distance := 5.0
+@export var min_distance := 0.0
 @export var max_distance := 12.0
 @export var zoom_speed := 1.0
 

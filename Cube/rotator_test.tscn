@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c2nlxuvx143ir"]
+
+[ext_resource type="Script" uid="uid://dbh6sbqd2ykpm" path="res://rotator_test.gd" id="1_h8yj7"]
+[ext_resource type="PackedScene" uid="uid://d3mxfx40h072q" path="res://components/axis.tscn" id="2_pdrrf"]
+
+[node name="RotatorTest" type="Node3D" unique_id=1100856853]
+script = ExtResource("1_h8yj7")
+
+[node name="Axis" parent="." unique_id=1736347153 instance=ExtResource("2_pdrrf")]
+visible = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1092016058]
+transform = Transform3D(1, 0, 0, 0, 0.94071513, 0.33919767, 0, -0.33919767, 0.94071513, 0, 2.2057896, 5.3058367)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2094804016]
+transform = Transform3D(-0.12084717, 0.43802142, -0.8908048, 0, 0.8973816, 0.44125533, 0.99267113, 0.05332446, -0.10844603, -12.494084, 0.5914974, 0.5175667)
