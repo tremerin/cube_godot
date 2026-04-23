@@ -4,6 +4,7 @@ extends Node3D
 @onready var rotators_y: Node3D = $RotatorsY
 @onready var rotators_z: Node3D = $RotatorsZ
 @onready var containers: Node3D = $Containers
+@onready var ray_cast_3d: RayCast3D = $CameraPivot/Camera3D/RayCast3D
 
 var line_length: int = 4
 var container_size: float = 1.0
@@ -11,6 +12,10 @@ var cube_size: float = (line_length * (container_size * 2)) - container_size
 var offset: float = cube_size/2 - container_size/2
 var can_move: bool = true
 var piece = load("res://components/piece.tscn")
+
+var selected_rotator_x: Node3D
+var selected_rotator_y: Node3D
+var selected_rotator_z: Node3D
 
 
 func _ready() -> void:
@@ -21,6 +26,41 @@ func _ready() -> void:
 	_create_containers(line_length)
 	_cube_box(cube_size)
 	_create_pieces()
+
+
+
+func _physics_process(delta: float) -> void:
+	if can_move:
+		if ray_cast_3d.is_colliding():
+			_select_rotator(ray_cast_3d.get_collider().position)
+
+
+func _select_rotator(position: Vector3) ->void:
+	print("selected rotator: ", position, " ", _rotator_num(position.x), _rotator_num(position.y), _rotator_num(position.z))
+	selected_rotator_x = find_rotator_by_name(rotators_x, "rx" +  str(_rotator_num(position.x)))
+	selected_rotator_y = find_rotator_by_name(rotators_y, "ry" +  str(_rotator_num(position.y)))
+	selected_rotator_z = find_rotator_by_name(rotators_z, "rz" +  str(_rotator_num(position.z)))
+	print(selected_rotator_y)
+	
+
+func _rotator_num(position: float) -> int:
+	var num: int = 0
+	var actual: float = -offset
+	var distance: float = container_size * 2
+	while position != actual:
+		actual += distance
+		num += 1
+	return num
+
+
+func find_rotator_by_name(rotator: Node, name: String) -> Node:
+	if rotator.name == name:
+		return rotator
+	for child in rotator.get_children():
+		var result = find_rotator_by_name(child, name)
+		if result:
+			return result
+	return null
 
 
 func _cube_box(size: float) ->void:
@@ -163,17 +203,23 @@ func _select_pieces(area: Area3D) ->void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept") and can_move:
-		can_move = false
-		_rotate_node($RotatorsZ/rz3, Vector3.FORWARD, 90)
+		#can_move = false
+		#_rotate_node($RotatorsZ/rz3, Vector3.FORWARD, 90)
+		print(ray_cast_3d.position)
 	if event.is_action_pressed("ui_left") and can_move:
 		can_move = false
 		#_rotate_node($RotatorsY/ry3, Vector3.UP, 90)
-		_rotate_y($RotatorsY/ry3)
+		_rotate_y(selected_rotator_y)
 	if event.is_action_pressed("ui_right") and can_move:
 		can_move = false
 		#_rotate_node($RotatorsX/rx3, Vector3.RIGHT, 90)
-		_rotate_y($RotatorsY/ry3, false)
-
+		_rotate_y(selected_rotator_y, false)
+	if event.is_action_pressed("ui_up") and can_move:
+		can_move = false
+		_rotate_x(selected_rotator_x)
+	if event.is_action_pressed("ui_down") and can_move:
+		can_move = false
+		_rotate_x(selected_rotator_x, false)
 
 func _rotate_y(rotator: Area3D, positive: bool = true, time: float = 0.2) -> void:
 	var distance: float = container_size * 2
