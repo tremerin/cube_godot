@@ -1,6 +1,7 @@
 extends StaticBody3D
 
-var piece_type:int 
+var piece_type:int
+var material: StandardMaterial3D 
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 
 var colors = [
@@ -14,9 +15,18 @@ var colors = [
 
 func _ready() -> void:
 	randomize()
-	var random =  randi_range(0, 5)
+	material = StandardMaterial3D.new()
+	random_piece()
+	#var random =  randi_range(0, 5)
 	#print(random)
+	#piece_type = random
+	#material.albedo_color = colors[random]
+	#mesh_instance_3d.material_override = material
+
+
+func random_piece() -> void:
+	var random: int = randi_range(0, 5)
 	piece_type = random
-	var material = StandardMaterial3D.new()
 	material.albedo_color = colors[random]
 	mesh_instance_3d.material_override = material
+	

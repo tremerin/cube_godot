@@ -2,18 +2,16 @@
 
 [ext_resource type="Script" uid="uid://b4wi0jdg8h484" path="res://components/piece.gd" id="1_0ox6o"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_dnv8r"]
-radius = 0.4069585
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ox6o"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_0ox6o"]
+[sub_resource type="BoxMesh" id="BoxMesh_0ox6o"]
 
 [node name="Piece" type="StaticBody3D" unique_id=1192698234]
 collision_layer = 2
 script = ExtResource("1_0ox6o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=227052251]
-shape = SubResource("SphereShape3D_dnv8r")
+shape = SubResource("BoxShape3D_0ox6o")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=89564065]
-transform = Transform3D(0.805, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
-mesh = SubResource("SphereMesh_0ox6o")
+mesh = SubResource("BoxMesh_0ox6o")

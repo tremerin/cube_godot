@@ -7,9 +7,6 @@
 [node name="Cube" type="Node3D" unique_id=754365821]
 script = ExtResource("1_rth6s")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=152291042]
-transform = Transform3D(1, 0, 0, 0, 0.92168045, 0.38794994, 0, -0.38794994, 0.92168045, 0, 5.361831, 5.8497186)
-
 [node name="Axis" parent="." unique_id=1736347153 instance=ExtResource("2_f4l7r")]
 visible = true
 
@@ -21,4 +18,12 @@ visible = true
 
 [node name="Containers" type="Node3D" parent="." unique_id=1431829733]
 
+[node name="Checkers" type="Node3D" parent="." unique_id=1663973898]
+
 [node name="CameraPivot" parent="." unique_id=888366665 instance=ExtResource("3_l3fwx")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=576549207]
+light_energy = 6.481
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=152291042]
+transform = Transform3D(1, 0, 0, 0, 0.92168045, 0.38794994, 0, -0.38794994, 0.92168045, 0, 5.361831, 5.8497186)
