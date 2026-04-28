@@ -222,15 +222,25 @@ func _check_line() -> void:
 			elif count == line_length -1:
 				print("line: ", checker.name)
 				print(piece.piece_type)
-				_makeline(checker)
+				_make_line(checker)
 			count += 1
 
 
-func _makeline(checker: Area3D) -> void:
+func _make_line(checker: Area3D) -> void:
+	var pieces =  checker.get_overlapping_bodies()
+	var tween = create_tween()
+	var final_scale: Vector3 = Vector3(1.3, 1.3, 1.3)
+	var time: float = 0.3
+	for piece in pieces:
+		tween.parallel().tween_property(piece, "scale", final_scale, time)
+	tween.tween_callback(func(): _new_line(checker))
+
+
+func _new_line(checker: Area3D) -> void:
 	var pieces =  checker.get_overlapping_bodies()
 	for piece in pieces:
 		piece.random_piece()
-	pass
+		piece.scale = Vector3(1, 1, 1)
 
 
 func _rotate_node(node: Area3D, axis: Vector3, degrees: int) -> void:
