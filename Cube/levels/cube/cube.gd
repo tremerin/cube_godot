@@ -6,13 +6,20 @@ extends Node3D
 @onready var containers: Node3D = $Containers
 @onready var checkers: Node3D = $Checkers
 @onready var ray_cast_3d: RayCast3D = $CameraPivot/Camera3D/RayCast3D
+@onready var camera: Node3D = $CameraPivot/Camera3D
+@onready var directional_light: DirectionalLight3D = $DirectionalLight3D
+
+
 
 var line_length: int = 4
 var container_size: float = 1.0
 var cube_size: float = (line_length * (container_size * 2)) - container_size
 var offset: float = cube_size/2 - container_size/2
 var can_move: bool = true
+
 var piece = load("res://components/piece.tscn")
+var piece_normal_scale: float = 1.5
+var piece_final_scale: float = 1.8
 
 var selected_rotator_x: Node3D
 var selected_rotator_y: Node3D
@@ -31,6 +38,8 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	directional_light.global_rotation = camera.global_rotation
+	print(camera.global_rotation)
 	if can_move:
 		if ray_cast_3d.is_colliding():
 			_select_rotator(ray_cast_3d.get_collider().position)
@@ -229,7 +238,7 @@ func _check_line() -> void:
 func _make_line(checker: Area3D) -> void:
 	var pieces =  checker.get_overlapping_bodies()
 	var tween = create_tween()
-	var final_scale: Vector3 = Vector3(1.3, 1.3, 1.3)
+	var final_scale: Vector3 = Vector3(piece_final_scale, piece_final_scale, piece_final_scale)
 	var time: float = 0.3
 	for piece in pieces:
 		tween.parallel().tween_property(piece, "scale", final_scale, time)
@@ -240,7 +249,7 @@ func _new_line(checker: Area3D) -> void:
 	var pieces =  checker.get_overlapping_bodies()
 	for piece in pieces:
 		piece.random_piece()
-		piece.scale = Vector3(1, 1, 1)
+		piece.scale = Vector3(piece_normal_scale, piece_normal_scale, piece_normal_scale)
 
 
 func _rotate_node(node: Area3D, axis: Vector3, degrees: int) -> void:
@@ -264,6 +273,7 @@ func _create_pieces() ->void:
 		if child.get_child_count() == 1:
 			var instance = piece.instantiate()
 			instance.position = child.position
+			instance.scale = Vector3(piece_normal_scale, piece_normal_scale, piece_normal_scale)
 			add_child(instance)
 			#instance.reparent(child, true)
 
