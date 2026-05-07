@@ -6,6 +6,7 @@ extends Node3D
 @onready var containers: Node3D = $Containers
 @onready var checkers: Node3D = $Checkers
 @onready var ray_cast_3d: RayCast3D = $CameraPivot/Camera3D/RayCast3D
+@onready var ray_cast_cover: RayCast3D = $CameraPivot/Camera3D/RayCastCover
 @onready var camera: Node3D = $CameraPivot/Camera3D
 @onready var directional_light: DirectionalLight3D = $DirectionalLight3D
 
@@ -25,24 +26,33 @@ var selected_rotator_x: Node3D
 var selected_rotator_y: Node3D
 var selected_rotator_z: Node3D
 
+var cover: String
+
+var color_black = Color()
+var color_transparent = Color(0, 0, 1, 0.2)
 
 func _ready() -> void:
 	print("line length: ", line_length)
 	print("cube_size: ", cube_size)
 	print("offset: ", offset)
+	ray_cast_cover.collide_with_areas = true
+	#ray_cast_cover.collision_mask = 3
 	_create_rotators(line_length)
 	_create_containers(line_length)
-	#_cube_box(cube_size)
+	_cube_box(cube_size - 0.1, color_black)
 	_create_pieces()
 	_create_checkers()
+	_create_cube_cover()
 
 
 func _physics_process(_delta: float) -> void:
 	directional_light.global_rotation = camera.global_rotation
-	print(camera.global_rotation)
+	#print(camera.global_rotation)
 	if can_move:
 		if ray_cast_3d.is_colliding():
 			_select_rotator(ray_cast_3d.get_collider().position)
+		if ray_cast_cover.is_colliding():
+			cover = ray_cast_cover.get_collider().name
 
 
 func _select_rotator(position: Vector3) ->void:
@@ -73,17 +83,17 @@ func _find_rotator_by_name(rotator: Node, name: String) -> Node:
 	return null
 
 
-func _cube_box(size: float) ->void:
+func _cube_box(cube_size: float, cube_color: Color) ->void:
 	var mesh_instance: MeshInstance3D = MeshInstance3D.new()
 	var box: BoxMesh = BoxMesh.new()
-	box.size = Vector3(size, size, size)
+	box.size = Vector3(cube_size, cube_size, cube_size)
 	mesh_instance.mesh = box
 	add_child(mesh_instance)
 	mesh_instance.position = Vector3.ZERO
 
 	var material = StandardMaterial3D.new()
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color = Color(0, 0, 1, 0.2)
+	material.albedo_color = cube_color
 	mesh_instance.material_override = material
 
 
@@ -218,6 +228,74 @@ func _create_checkers() -> void:
 				checkers.add_child(area)
 
 
+func _create_cube_cover() -> void:
+	var thickness: float = 0.3
+	var layer: int = 3
+	var area: Area3D
+	var collision: CollisionShape3D
+	var shape_x: BoxShape3D = BoxShape3D.new()
+	var shape_y: BoxShape3D = BoxShape3D.new()
+	var shape_z: BoxShape3D = BoxShape3D.new()
+	var cover_size = cube_size + (piece_normal_scale - 1)
+	shape_x.size = Vector3(thickness, cover_size, cover_size)
+	shape_y.size = Vector3(cover_size, thickness, cover_size)
+	shape_z.size = Vector3(cover_size, cover_size, thickness)
+	# right
+	area = Area3D.new()
+	area.name = "right"
+	area.position = Vector3(offset + (piece_normal_scale * 0.5), 0, 0)
+	area.collision_layer = 1 << (layer - 1)
+	collision = CollisionShape3D.new()
+	collision.shape = shape_x
+	area.add_child(collision)
+	add_child(area)
+	# left
+	area = Area3D.new()
+	area.name = "left"
+	area.position = Vector3(-offset -(piece_normal_scale * 0.5), 0, 0)
+	area.collision_layer = 1 << (layer - 1)
+	collision = CollisionShape3D.new()
+	collision.shape = shape_x
+	area.add_child(collision)
+	add_child(area)
+	# top
+	area = Area3D.new()
+	area.name = "top"
+	area.position = Vector3(0, offset + (piece_normal_scale * 0.5), 0)
+	area.collision_layer = 1 << (layer - 1)
+	collision = CollisionShape3D.new()
+	collision.shape = shape_y
+	area.add_child(collision)
+	add_child(area)
+	# down
+	area = Area3D.new()
+	area.name = "down"
+	area.position = Vector3(0, -offset - (piece_normal_scale * 0.5), 0)
+	area.collision_layer = 1 << (layer - 1)
+	collision = CollisionShape3D.new()
+	collision.shape = shape_y
+	area.add_child(collision)
+	add_child(area)
+	# back
+	area = Area3D.new()
+	area.name = "back"
+	area.position = Vector3(0, 0, offset + (piece_normal_scale * 0.5))
+	area.collision_layer = 1 << (layer - 1)
+	collision = CollisionShape3D.new()
+	collision.shape = shape_z
+	area.add_child(collision)
+	add_child(area)
+	# forward
+	area = Area3D.new()
+	area.name = "forward"
+	area.position = Vector3(0, 0, -offset - (piece_normal_scale * 0.5))
+	area.collision_layer = 1 << (layer - 1)
+	collision = CollisionShape3D.new()
+	collision.shape = shape_z
+	area.add_child(collision)
+	add_child(area)
+
+
 func _check_line() -> void:
 	var type: int
 	var count: int
@@ -316,6 +394,41 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_page_down"):
 			can_move = false
 			_rotate_z(selected_rotator_z, false)
+		
+		if event.is_action_pressed("left"):
+			if cover != "top" and cover != "down":
+				can_move = false
+				_rotate_y(selected_rotator_y)
+		if event.is_action_pressed("right"):
+			if cover != "top" and cover != "down": 
+				can_move = false
+				_rotate_y(selected_rotator_y, false)
+		if event.is_action_pressed("top"):
+			if cover == "back":
+				can_move = false
+				_rotate_x(selected_rotator_x, false)
+			elif cover == "forward":
+				can_move = false
+				_rotate_x(selected_rotator_x)
+			elif cover == "right":
+				can_move = false
+				_rotate_z(selected_rotator_z, false)
+			elif cover == "left":
+				can_move = false
+				_rotate_z(selected_rotator_z)
+		if event.is_action_pressed("down"):
+			if cover == "back":
+				can_move = false
+				_rotate_x(selected_rotator_x)
+			elif cover == "forward":
+				can_move = false
+				_rotate_x(selected_rotator_x, false)
+			elif cover == "right":
+				can_move = false
+				_rotate_z(selected_rotator_z)
+			elif cover == "left":
+				can_move = false
+				_rotate_z(selected_rotator_z, false)
 	else:
 		return
 
